@@ -5,7 +5,7 @@ const OnlineUser = require('../models/OnlineUser');
 // GET all online users
 router.get('/', async (req, res) => {
   try {
-    const onlineUsers = await OnlineUser.find();
+    const onlineUsers = await OnlineUser.find({ isOnline: true });
     res.json(onlineUsers);
   } catch (err) {
     console.error(err.message);
