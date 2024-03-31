@@ -4,6 +4,9 @@ const Schedule = require('../models/Schedule');
 
 router.post('/', async (req, res) => {
     try {
+        // Delete all documents in the Schedule collection
+        await Schedule.deleteMany({});
+
         const schedules = req.body;
         const savedSchedules = [];
 
