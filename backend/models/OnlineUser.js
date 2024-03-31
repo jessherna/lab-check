@@ -5,7 +5,10 @@ const OnlineUserSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  // Add any other fields you might need, such as user ID, timestamps, etc.
-});
+  isOnline: {
+    type: Boolean,
+    default: false
+  }
+}, { timestamps: true } );
 
 module.exports = mongoose.model('OnlineUser', OnlineUserSchema);
