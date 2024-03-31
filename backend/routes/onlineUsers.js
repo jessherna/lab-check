@@ -23,15 +23,35 @@ router.post('/', async (req, res) => {
     if (!onlineUser) {
       // If the alias doesn't exist, create a new online user
       onlineUser = new OnlineUser({
-        alias
+        alias,
+        isOnline: true,
       });
-
+    } else {
+      // If the user already exists, update the isOnline status
+      onlineUser.isOnline = true;
       await onlineUser.save();
-      console.log('New online user created:', onlineUser);
     }
 
     res.json(onlineUser); // Return the onlineUser whether it's existing or newly created
     console.log('Online user:', onlineUser);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// PATCH update an online user's status
+router.patch('/:id', async (req, res) => {
+  const { isOnline } = req.body;
+
+  try {
+    const onlineUser = await OnlineUser.findByIdAndUpdate(req.params.id, { isOnline }, { new: true });
+
+    if (!onlineUser) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    res.json(onlineUser);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
