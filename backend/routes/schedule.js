@@ -22,6 +22,15 @@ router.post('/', async (req, res) => {
     }
 });
 
+router.get('/today', async (req, res) => {
+    let today = new Date().toLocaleString('en-us', {  weekday: 'long' });
+    if (today === 'Sunday') {
+        today = 'Monday';
+    }
+    const schedule = await Schedule.find({ Day: today, Course: 'Close the Lab' });
+    res.json(schedule);
+});
+
 router.get('/', async (req, res) => {
     try {
         const schedules = await Schedule.find();

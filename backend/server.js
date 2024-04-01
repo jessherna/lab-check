@@ -8,11 +8,11 @@ const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 
 // Routes
-const rooms = require('./routes/rooms'); // import the rooms routes
-const history = require('./routes/history'); // import the history routes
 const onlineUsers = require('./routes/onlineUsers'); // import the onlineUsers routes
 const activityLog = require('./routes/activityLog');
 const schedule = require('./routes/schedule');
+const checksheet = require('./routes/checksheet');
+const checkpoint = require('./routes/checkpoint');
 
 
 const cors = require('cors');
@@ -24,7 +24,8 @@ mongoose.connect('mongodb://icetclass:Seta5b1pa55@15.156.204.35:27017/')
     .catch(err => console.log(err));
 
 const corsOptions = {
-    origin: '*',
+    origin: 'http://localhost:3000',
+    credentials: true,
 };
 
 app.use(cors(corsOptions));
@@ -53,11 +54,11 @@ passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
 }));
 
 // Use Routes
-app.use('/api/rooms', rooms); // use the rooms routes for requests to /api/rooms
-app.use('/api/history', history); // use the history routes for requests to /api/history
 app.use('/api/onlineUsers', onlineUsers); // use the onlineUsers routes for requests to /api/onlineUsers
 app.use('/api/activityLog', activityLog);
 app.use('/api/schedule', schedule);
+app.use('/api/checksheet', checksheet);
+app.use('/api/checkpoint', checkpoint);
 
 const port = process.env.PORT || 5000;
 
