@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const http = require('http');
 const socketIo = require('socket.io');
 
+
+
 // Passport 
 const passport = require('passport');
 const JwtStrategy = require('passport-jwt').Strategy;
@@ -19,6 +21,9 @@ const checkpoint = require('./routes/checkpoint');
 const cors = require('cors');
 const app = express();
 const server = http.createServer(app);
+
+const path = require("path");
+app.use(express.static(path.join(__dirname, "build")));
 
 // Connect to MongoDB
 mongoose.connect('mongodb://icetclass:Seta5b1pa55@15.156.204.35:27017/')
