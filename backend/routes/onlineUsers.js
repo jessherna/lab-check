@@ -13,29 +13,51 @@ router.get('/', async (req, res) => {
   }
 });
 
-// POST add a new online user or check if exists
+// POST add a new online user
 router.post('/', async (req, res) => {
   const { alias } = req.body;
 
   try {
+    // Check if the alias already exists
     let onlineUser = await OnlineUser.findOne({ alias });
 
-    if (!onlineUser) {
-      // If the alias doesn't exist, create a new online user
+    if (onlineUser) {
+      // If user already exists, update isOnline to true
+      onlineUser.isOnline = true;
+      await onlineUser.save();
+    } else {
+      // If user doesn't exist, create a new user
       onlineUser = new OnlineUser({
         alias,
         isOnline: true,
       });
-    } else {
-      // If the user already exists, update the isOnline status
-      onlineUser.isOnline = true;
+
       await onlineUser.save();
     }
 
-    res.json(onlineUser); // Return the onlineUser whether it's existing or newly created
+    res.json(onlineUser); // Return the onlineUser
     console.log('Online user:', onlineUser);
   } catch (err) {
     console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// GET fetch an existing online user by ID
+router.get('/:id', async (req, res) => {
+  try {
+    const onlineUser = await OnlineUser.findById(req.params.id);
+
+    if (!onlineUser) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    res.json(onlineUser); // Return the existing onlineUser
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind == 'ObjectId') {
+      return res.status(404).json({ msg: 'User not found' });
+    }
     res.status(500).send('Server Error');
   }
 });
