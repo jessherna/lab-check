@@ -17,8 +17,8 @@ router.get('/', (req, res) => {
 });
 
 router.patch('/:id', (req, res) => {
-    Checkpoint.findByIdAndUpdate(req.params.id, req.body)
-        .then(() => res.send({ message: 'Checkpoint updated successfully' }))
+    Checkpoint.findByIdAndUpdate(req.params.id, req.body, { new: true })
+        .then(updatedCheckpoint => res.json(updatedCheckpoint))
         .catch(err => res.status(500).send(err));
 });
 

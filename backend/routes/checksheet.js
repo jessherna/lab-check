@@ -31,6 +31,22 @@ router.put('/:id', (req, res) => {
         .catch(err => res.status(500).send(err));
 });
 
+// Update a checkpoint inside the checksheet
+router.patch('/:checksheetId/:checkpointId', async (req, res) => {
+    try {
+        const checksheet = await Checksheet.findById(req.params.checksheetId);
+        const checkpoint = checksheet.checkpoints.id(req.params.checkpointId);
+
+        checkpoint.set(req.body);
+
+        await checksheet.save();
+
+        res.json(checkpoint);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
 // Delete a checksheet by id
 router.delete('/:id', (req, res) => {
     Checksheet.findByIdAndDelete(req.params.id)
