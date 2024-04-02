@@ -84,6 +84,11 @@ io.on('connection', (socket) => {
     io.emit('refreshDashboards')
   });
 
+  socket.on('checkpointChecked', (checkpoint) => {
+    console.log('Checkpoint checked:', checkpoint);
+    io.emit('refreshDashboards')
+  });
+
   socket.on('disconnect', () => {
     console.log('Client disconnected');
   });
