@@ -5,7 +5,6 @@ const http = require('http');
 const socketIo = require('socket.io');
 
 
-
 // Passport 
 const passport = require('passport');
 const JwtStrategy = require('passport-jwt').Strategy;
